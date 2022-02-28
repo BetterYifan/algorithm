@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
 func rob2(nums []int) int {
@@ -45,43 +44,26 @@ func max(a, b int) int {
 }
 
 func main() {
-	res := shortestToChar("lovegleetcodew", 'e')
+	res := generate(2)
 	fmt.Println(res)
 }
 
-func shortestToChar(s string, c byte) []int {
-	cIndex := make([]int, 0)
-	for i, v := range s {
-		if byte(v) == c {
-			cIndex = append(cIndex, i)
-		}
+func generate(numRows int) [][]int {
+	res := make([][]int, 1)
+	if numRows == 0 {
+		return res
 	}
-	res := make([]int, 0)
-	min := func(a, b float64) int {
-		if a < b {
-			return int(a)
-		} else {
-			return int(b)
+	res[0] = []int{1}
+	for row := 1; row < numRows; row++ {
+		arr := make([]int, row+1)
+		for k, _ := range arr {
+			if k == 0 || k == row {
+				arr[k] = 1
+				continue
+			}
+			arr[k] = res[row-1][k-1] + res[row-1][k]
 		}
+		res = append(res, arr)
 	}
-	//应该只要比较两个cIndex
-	first, second := -1, 0
-	for i := 0; i < len(s); i++ {
-		if s[i] == c {
-			first += 1
-			second += 1
-		}
-		if first < 0 {
-			res = append(res, int(math.Abs(float64(cIndex[second]-i))))
-			continue
-		}
-		if second > len(cIndex)-1 {
-			res = append(res, int(math.Abs(float64(cIndex[first]-i))))
-			continue
-		}
-		res = append(res, min(math.Abs(float64(cIndex[first]-i)), math.Abs(float64(cIndex[second]-i))))
-
-	}
-
 	return res
 }
