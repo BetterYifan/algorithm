@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 func rob2(nums []int) int {
 	if len(nums) == 1 {
@@ -42,6 +45,43 @@ func max(a, b int) int {
 }
 
 func main() {
-	res := rob2([]int{1, 2, 3, 1})
+	res := shortestToChar("lovegleetcodew", 'e')
 	fmt.Println(res)
+}
+
+func shortestToChar(s string, c byte) []int {
+	cIndex := make([]int, 0)
+	for i, v := range s {
+		if byte(v) == c {
+			cIndex = append(cIndex, i)
+		}
+	}
+	res := make([]int, 0)
+	min := func(a, b float64) int {
+		if a < b {
+			return int(a)
+		} else {
+			return int(b)
+		}
+	}
+	//应该只要比较两个cIndex
+	first, second := -1, 0
+	for i := 0; i < len(s); i++ {
+		if s[i] == c {
+			first += 1
+			second += 1
+		}
+		if first < 0 {
+			res = append(res, int(math.Abs(float64(cIndex[second]-i))))
+			continue
+		}
+		if second > len(cIndex)-1 {
+			res = append(res, int(math.Abs(float64(cIndex[first]-i))))
+			continue
+		}
+		res = append(res, min(math.Abs(float64(cIndex[first]-i)), math.Abs(float64(cIndex[second]-i))))
+
+	}
+
+	return res
 }
