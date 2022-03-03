@@ -44,26 +44,23 @@ func max(a, b int) int {
 }
 
 func main() {
-	res := generate(2)
+	res := isHappy(19)
 	fmt.Println(res)
 }
 
-func generate(numRows int) [][]int {
-	res := make([][]int, 1)
-	if numRows == 0 {
-		return res
+func isHappy(n int) bool {
+	suMap := make(map[int]bool)
+	for n != 1 && !suMap[n] {
+		n, suMap[n] = sum(n), true
 	}
-	res[0] = []int{1}
-	for row := 1; row < numRows; row++ {
-		arr := make([]int, row+1)
-		for k, _ := range arr {
-			if k == 0 || k == row {
-				arr[k] = 1
-				continue
-			}
-			arr[k] = res[row-1][k-1] + res[row-1][k]
-		}
-		res = append(res, arr)
+	return n == 1
+}
+
+func sum(n int) int {
+	sum := 0
+	for n > 0 {
+		sum += (n % 10) * (n % 10)
+		n = n / 10
 	}
-	return res
+	return sum
 }
