@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 func rob2(nums []int) int {
@@ -44,23 +45,34 @@ func max(a, b int) int {
 }
 
 func main() {
-	res := isHappy(19)
-	fmt.Println(res)
+	wordPattern("abba", "dog cat cat fish")
 }
 
-func isHappy(n int) bool {
-	suMap := make(map[int]bool)
-	for n != 1 && !suMap[n] {
-		n, suMap[n] = sum(n), true
-	}
-	return n == 1
-}
+func wordPattern(pattern string, s string) bool {
+	strs := strings.Split(s, " ")
 
-func sum(n int) int {
-	sum := 0
-	for n > 0 {
-		sum += (n % 10) * (n % 10)
-		n = n / 10
+	if len(pattern) != len(strs) {
+		return false
 	}
-	return sum
+
+	tmp := make(map[rune][]int) //map[char][index]
+	for index, r := range pattern {
+		if _, ok := tmp[r]; ok {
+			tmp[r] = append(tmp[r], index)
+		} else {
+			tmp[r] = make([]int, 0)
+			tmp[r] = append(tmp[r], index)
+		}
+	}
+
+	for _, index := range tmp {
+		// 根据index去char中比较
+		ss := strs[index[0]]
+		for _, i := range index {
+			if ss != strs[i] {
+				return false
+			}
+		}
+	}
+	return true
 }
