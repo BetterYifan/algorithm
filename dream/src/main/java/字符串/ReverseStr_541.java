@@ -22,6 +22,7 @@ public class ReverseStr_541 {
         return new String(sChar);
     }
 
+    // 针对字符串的连续局部进行反转
     private void reverse(char[] ch, int i, int j) {
         for (; i < j; i++, j--) {
             char temp = ch[i];
